@@ -1,0 +1,18 @@
+Package: PolyGibbs
+Title: Bayesian Analysis of Binary & Polychotomous Response Data.
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Abhisek",
+           family = "Chakraborty",
+           role = c("aut", "cre"),
+           email = "cabhisek@stat.tamu.edu",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description:
+      The primary objective of the R Package is implementation of Probit Regression
+      for Binary Responses via data augmentation and Gibbs sampling and its extention in modelling 
+      Ordered Multinomial responses, as discussed in ”Bayesian Analysis of Binary and Polychotomous Response Data”
+      [Author(s): James H. Albert and Siddhartha Chib, Source: Journal of the American Statistical Association].
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
