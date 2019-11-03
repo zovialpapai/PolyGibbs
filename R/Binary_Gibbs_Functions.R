@@ -1,7 +1,7 @@
 # Model Fitting -----------------------------------------------------------
 #Libraries required
-install.packages("MASS")
-install.packages("truncnorm")
+#install.packages("MASS")
+#install.packages("truncnorm")
 require(MASS)
 require(truncnorm)
 # Train_X: n X p matrix of continuous covarites of training set.
@@ -14,20 +14,49 @@ require(truncnorm)
 
 # Inputs: Train_X, Test_X(Not Used), Train_Y, Test_Y(Not Used), nIter, prior, beta_start(Not Used), burn_in, prior_mean, prior_var
 
-#' Title
+#' Fitting Bayesian Probit Model.
 #'
-#' @param Train_X
-#' @param Train_Y
-#' @param nIter
-#' @param prior
-#' @param burn_in
-#' @param prior_mean
-#' @param prior_var
+#' \code{BinaryGibbs_fit} does Implementation of Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
+#' @param Train_X n X p matrix of continuous covarites of training set.
+#' @param Train_Y n X 1 vector of responses of training set. (takes values 0 or 1).
+#' @param nIter An  integer, No of iterations for the Gibbs Sampler.
+#' @param prior choice of prior (1: diffuse prior,2: proper conjugate prior).
+#' @param burn_in An integer, No of iterations neglected at begining of the chain in calculation of posterior mean.
+#' @param prior_mean a (p+1) X 1 vector specifying mean of the normal conjugate prior, if prior = 2.
+#' @param prior_var a (p+1) X (p+1) matrix specifying variance of the normal conjugate prior, if prior = 2.
 #'
-#' @return
+#' @return \code{beta_matrix} a nIter X (p+1) matrix of beta estimate chains.
+#' @return \code{estimates} a (p+1) X 1 vector of beta estimates.
+#' @return \code{Train_Accuracy} a nIter X 1 vector of accuracy
+#'
+#' @examples set.seed(250)
+#' @examples require(truncnorm)
+#' @examples require(MASS)
+#' @examples N <- 500
+#' @examples x1 <- seq(-1, 1, length.out = N)
+#' @examples x2 <- rnorm(N, 0, 1)
+#' @examples D <- 3
+#' @examples X <- matrix(c(rep(1, N), x1, x2), ncol = D)
+#' @examples true_theta <- c(- 0.5, 3.3, 2)
+#' @examples p <- pnorm(X %*% true_theta)
+#' @examples y <- rbinom(N, 1, p)
+#' @examples N1  <- sum(y)  # Number of successes
+#' @examples N0  <- N - N1  # Number of failures
+#' @examples #Spliting The Data in Train and Test in 80:20 ratio
+#' @examples Train_ID = sample(1:nrow(X), round(nrow(X) * 0.8), replace = FALSE) # Train Data IDS
+#' @examples Train_X = X[Train_ID, -1] # Train Data Covariates
+#' @examples Test_X = X[-Train_ID, -1] # Test Data Covarites
+#' @examples Train_Y = y[Train_ID] # Train Data Response
+#' @examples Test_Y = y[-Train_ID] # Test Data Response
+#' @examples nIter = 10000
+#' @examples burn_in = round(nIter * 0.5)
+#' @examples prior = 2
+#' @examples prior_mean = rep(1, 3)
+#' @examples prior_var = diag(10, 3)
+#' @examples BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var )
+#'
 #' @export
-#'
-#' @examples
+
 BinaryGibbs_fit <- function(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var ){
   # To include libraries***
   # beta_start can be taken as the MLE in Prior 1
