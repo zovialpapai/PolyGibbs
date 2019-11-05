@@ -234,3 +234,4 @@ BinaryGibbs_fit <- function(Train_X, Train_Y, nIter, prior, burn_in, prior_mean,
 
   return(list(beta_matrix = beta_matrix, estimates = estimates,Train_Accuracy = Train_Accuracy ))
 }
+
