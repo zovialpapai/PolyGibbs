@@ -1,5 +1,5 @@
 Package: PolyGibbs
-Title: Bayesian Analysis of Binary & Polychotomous Response Data.
+Title: Bayesian Analysis of Binary & Polychotomous Response Data
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Abhisek",
