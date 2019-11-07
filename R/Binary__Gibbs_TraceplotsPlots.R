@@ -11,6 +11,8 @@ require(truncnorm)
 #' Plots Posterior Frequency Distribution .
 #'
 #' \code{BinaryGibbs_PosteriorDistribution_plot} Plots Posterior Frequency Distribution of Parameters estimated by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
+#' @import MASS
+#' @import truncnorm
 #' @param beta_matrix: a nIter X (p+1) matrix of beta_updates.
 #' @param k: a integer not greater than (p+1) indicating which beta is of interest.
 #'

@@ -8,6 +8,9 @@
 #' Spliting Data in Trainset and Test Set.
 #'
 #' \code{Split} Splits Data in Trainset and Test Set
+#' @import MASS
+#' @import truncnorm
+#' @import mvtnorm
 #' @param X : A N X p matrix of covariates
 #' @param y : A N X 1 vector of responses
 #' @param Trainset_Percentage: (A real no between 0 and 1 both exclusive)

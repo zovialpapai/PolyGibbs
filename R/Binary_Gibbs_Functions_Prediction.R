@@ -6,6 +6,9 @@
 #' Prediction using fitted Bayesian Probit Model.
 #'
 #' \code{BinaryGibbs_Pred} Predicts using fitted Bayesian Probit Model.
+#' @import MASS
+#' @import truncnorm
+#'
 #' @param estimates: a (p+1) X 1 vector of beta estimates, where beta0, beta1, beta2 etc are sorted as 0,1,2...
 #' @param Test_X: a () X p matrix of continuous scale covarites
 #'
