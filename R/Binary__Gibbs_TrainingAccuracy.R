@@ -6,6 +6,7 @@
 #' \code{BinaryGibbs_Test_Accuracy} Calculates Accuracy of Prediction on Test Set for Bayesian Probit Regression.
 #' @import MASS
 #' @import truncnorm
+#' @import graphics
 #'
 #' @param Predicted_Y: a nrow(Test_X) X 1 vector of predicted responses.
 #' @param Test_Y: a nrow(Test_X) X 1 vector of actual responses.(ordering is assumed)

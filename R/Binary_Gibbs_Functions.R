@@ -19,6 +19,8 @@ require(truncnorm)
 #' \code{BinaryGibbs_fit} does Implementation of Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
 #' @import MASS
 #' @import truncnorm
+#' @import graphics
+#'
 #' @param Train_X n X p matrix of continuous covarites of training set.
 #' @param Train_Y n X 1 vector of responses of training set. (takes values 0 or 1).
 #' @param nIter An  integer, No of iterations for the Gibbs Sampler.
