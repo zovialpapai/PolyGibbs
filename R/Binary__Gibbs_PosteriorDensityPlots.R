@@ -19,10 +19,10 @@ require(truncnorm)
 #' @import truncnorm
 #' @import graphics
 #'
-#' @param beta_matrix: a nIter X (p+1) matrix of beta_updates.
-#' @param k: a integer not greater than (p+1) indicating which beta is of interest.
-#' @param burn_in: burn_in period , less than (nrow(beta_matrix) - 1)
-#' @param breaks: integer, no of breaks in histogram
+#' @param beta_matrix a nIter X (p+1) matrix of beta_updates.
+#' @param k a integer not greater than (p+1) indicating which beta is of interest.
+#' @param burn_in burn_in period , less than (nrow(beta_matrix) - 1)
+#' @param breaks integer, no of breaks in histogram
 #'
 #' @return \code{PosteriorDistribution_plot} A histrogram showing Posterior Frequency Distribution and Posterior Mean
 #'

@@ -15,8 +15,8 @@ require(truncnorm)
 #' @import truncnorm
 #' @import graphics
 #'
-#' @param beta_matrix: a nIter X (p+1) matrix of beta_updates.
-#' @param k: a integer not greater than (p+1) indicating which beta is of interest.
+#' @param beta_matrix a nIter X (p+1) matrix of beta_updates.
+#' @param k a integer not greater than (p+1) indicating which beta is of interest.
 #'
 #' @return \code{traceplot} Line diagrams showing convergence of gibbs sampler for a parameter and indicating cumulative posterior mean over iterartions.
 #'

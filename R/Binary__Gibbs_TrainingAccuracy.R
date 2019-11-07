@@ -8,10 +8,10 @@
 #' @import truncnorm
 #' @import graphics
 #'
-#' @param Predicted_Y: a nrow(Test_X) X 1 vector of predicted responses.
-#' @param Test_Y: a nrow(Test_X) X 1 vector of actual responses.(ordering is assumed)
+#' @param Predicted_Y a nrow(Test_X) X 1 vector of predicted responses.
+#' @param Test_Y a nrow(Test_X) X 1 vector of actual responses.(ordering is assumed)
 #'
-#' @return Test_Accuracy: A scalar giving the accuracy on the test set.
+#' @return Test_Accuracy A scalar giving the accuracy on the test set.
 #'
 #' @examples set.seed(250)
 #' @examples require(truncnorm)
