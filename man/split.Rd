@@ -7,9 +7,9 @@
 split(X, y, Trainset_Proportion)
 }
 \arguments{
-\item{X}{: A N X p matrix of covariates}
+\item{X}{A N X p matrix of covariates}
 
-\item{y}{: A N X 1 vector of responses}
+\item{y}{A N X 1 vector of responses}
 
 \item{Trainset_Percentage:}{(A real no between 0 and 1 both exclusive)}
 }

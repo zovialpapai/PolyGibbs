@@ -7,6 +7,7 @@
 #' @import MASS
 #' @import truncnorm
 #' @import graphics
+#' @import stats
 #'
 #' @param Predicted_Y a nrow(Test_X) X 1 vector of predicted responses.
 #' @param Test_Y a nrow(Test_X) X 1 vector of actual responses.(ordering is assumed)

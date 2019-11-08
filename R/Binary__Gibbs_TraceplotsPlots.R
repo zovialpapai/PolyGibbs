@@ -14,6 +14,7 @@ require(truncnorm)
 #' @import MASS
 #' @import truncnorm
 #' @import graphics
+#' @import stats
 #'
 #' @param beta_matrix a nIter X (p+1) matrix of beta_updates.
 #' @param k a integer not greater than (p+1) indicating which beta is of interest.

@@ -7,13 +7,13 @@
 BinaryGibbs_PosteriorDistribution_plot(beta_matrix, k, burn_in, breaks)
 }
 \arguments{
-\item{beta_matrix:}{a nIter X (p+1) matrix of beta_updates.}
+\item{beta_matrix}{a nIter X (p+1) matrix of beta_updates.}
 
-\item{k:}{a integer not greater than (p+1) indicating which beta is of interest.}
+\item{k}{a integer not greater than (p+1) indicating which beta is of interest.}
 
-\item{burn_in:}{burn_in period , less than (nrow(beta_matrix) - 1)}
+\item{burn_in}{burn_in period , less than (nrow(beta_matrix) - 1)}
 
-\item{breaks:}{integer, no of breaks in histogram}
+\item{breaks}{integer, no of breaks in histogram}
 }
 \value{
 \code{PosteriorDistribution_plot} A histrogram showing Posterior Frequency Distribution and Posterior Mean

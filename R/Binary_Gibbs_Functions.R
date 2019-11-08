@@ -20,6 +20,7 @@ require(truncnorm)
 #' @import MASS
 #' @import truncnorm
 #' @import graphics
+#' @import stats
 #'
 #' @param Train_X n X p matrix of continuous covarites of training set.
 #' @param Train_Y n X 1 vector of responses of training set. (takes values 0 or 1).

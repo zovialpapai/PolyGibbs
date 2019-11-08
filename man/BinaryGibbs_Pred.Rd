@@ -7,9 +7,9 @@
 BinaryGibbs_Pred(estimates, Test_X)
 }
 \arguments{
-\item{estimates:}{a (p+1) X 1 vector of beta estimates, where beta0, beta1, beta2 etc are sorted as 0,1,2...}
+\item{estimates}{a (p+1) X 1 vector of beta estimates, where beta0, beta1, beta2 etc are sorted as 0,1,2...}
 
-\item{Test_X:}{a () X p matrix of continuous scale covarites}
+\item{Test_X}{a () X p matrix of continuous scale covarites}
 }
 \value{
 Predicted_Y: a nrow(Test_X) X 1 vector of predicted responses

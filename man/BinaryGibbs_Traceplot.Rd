@@ -7,9 +7,9 @@
 BinaryGibbs_Traceplot(beta_matrix, k)
 }
 \arguments{
-\item{beta_matrix:}{a nIter X (p+1) matrix of beta_updates.}
+\item{beta_matrix}{a nIter X (p+1) matrix of beta_updates.}
 
-\item{k:}{a integer not greater than (p+1) indicating which beta is of interest.}
+\item{k}{a integer not greater than (p+1) indicating which beta is of interest.}
 }
 \value{
 \code{traceplot} Line diagrams showing convergence of gibbs sampler for a parameter and indicating cumulative posterior mean over iterartions.

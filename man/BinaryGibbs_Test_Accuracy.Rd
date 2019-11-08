@@ -7,12 +7,12 @@
 BinaryGibbs_Test_Accuracy(Predicted_Y, Test_Y)
 }
 \arguments{
-\item{Predicted_Y:}{a nrow(Test_X) X 1 vector of predicted responses.}
+\item{Predicted_Y}{a nrow(Test_X) X 1 vector of predicted responses.}
 
-\item{Test_Y:}{a nrow(Test_X) X 1 vector of actual responses.(ordering is assumed)}
+\item{Test_Y}{a nrow(Test_X) X 1 vector of actual responses.(ordering is assumed)}
 }
 \value{
-Test_Accuracy: A scalar giving the accuracy on the test set.
+Test_Accuracy A scalar giving the accuracy on the test set.
 }
 \description{
 \code{BinaryGibbs_Test_Accuracy} Calculates Accuracy of Prediction on Test Set for Bayesian Probit Regression.
