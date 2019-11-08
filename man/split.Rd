@@ -11,7 +11,7 @@ split(X, y, Trainset_Proportion)
 
 \item{y}{A N X 1 vector of responses}
 
-\item{Trainset_Percentage}{(A real no between 0 and 1 both exclusive)}
+\item{Trainset_Proportion}{(A real no between 0 and 1 both exclusive)}
 }
 \value{
 \code{Train_X} A [N * Trainset_Proportion] X p matrix of covariates.
