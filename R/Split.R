@@ -16,7 +16,7 @@
 #'
 #' @param X  A N X p matrix of covariates
 #' @param y  A N X 1 vector of responses
-#' @param Trainset_Percentage (A real no between 0 and 1 both exclusive)
+#' @param Trainset_Proportion (A real no between 0 and 1 both exclusive)
 #'
 #' @return \code{Train_X} A [N * Trainset_Proportion] X p matrix of covariates.
 #' @return \code{Train_Y} A [N * Trainset_Proportion] X 1 vector of responses.
