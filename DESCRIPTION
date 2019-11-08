@@ -19,4 +19,6 @@ RoxygenNote: 6.1.1
 Imports: 
     MASS,
     truncnorm,
-    mvtnorm
+    mvtnorm,
+    graphics,
+    stats
