@@ -2,7 +2,7 @@
 % Please edit documentation in R/Binary__Gibbs_TraceplotsPlots.R
 \name{BinaryGibbs_Traceplot}
 \alias{BinaryGibbs_Traceplot}
-\title{Plots Posterior Frequency Distribution .}
+\title{Plots for Diagnosis of Convergence Distribution .}
 \usage{
 BinaryGibbs_Traceplot(beta_matrix, k)
 }
@@ -15,7 +15,7 @@ BinaryGibbs_Traceplot(beta_matrix, k)
 \code{traceplot} Line diagrams showing convergence of gibbs sampler for a parameter and indicating cumulative posterior mean over iterartions.
 }
 \description{
-\code{BinaryGibbs_PosteriorDistribution_plot} Plots Posterior Frequency Distribution of Parameters estimated by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
+\code{BinaryGibbs_Traceplot} Plots for diagnosis of Parameters estimates by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
 }
 \examples{
 set.seed(250)

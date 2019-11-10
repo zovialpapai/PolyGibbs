@@ -8,9 +8,9 @@ require(MASS)
 require(truncnorm)
 
 
-#' Plots Posterior Frequency Distribution .
+#' Plots for Diagnosis of Convergence Distribution .
 #'
-#' \code{BinaryGibbs_PosteriorDistribution_plot} Plots Posterior Frequency Distribution of Parameters estimated by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
+#' \code{BinaryGibbs_Traceplot} Plots for diagnosis of Parameters estimates by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
 #' @import MASS
 #' @import truncnorm
 #' @import graphics
