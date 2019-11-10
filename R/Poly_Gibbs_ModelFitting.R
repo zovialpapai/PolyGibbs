@@ -12,7 +12,7 @@ library(truncnorm)
 # nIter: An  integer, No of iterations for the Gibbs Sampler
 # burn_in: An integer, No of iterations neglected at begining of the chain in calculation of posterior mean
 # K: no of categories. (1,2,3,..K)
-#' Title Fitting Bayesian Ordered Multinomial Regression
+#'  Fitting Bayesian Ordered Multinomial Regression
 #'
 #' \code{MultinomGibbs_fit} does Implementation of Multinomial Regression for Ordered Categorical Responses via data augmentation and Gibbs sampling.
 #' @import MASS

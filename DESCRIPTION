@@ -21,4 +21,5 @@ Imports:
     truncnorm,
     mvtnorm,
     graphics,
-    stats
+    stats,
+    base

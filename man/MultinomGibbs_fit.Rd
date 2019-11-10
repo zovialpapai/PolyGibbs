@@ -2,7 +2,7 @@
 % Please edit documentation in R/Poly_Gibbs_ModelFitting.R
 \name{MultinomGibbs_fit}
 \alias{MultinomGibbs_fit}
-\title{Title Fitting Bayesian Ordered Multinomial Regression}
+\title{Fitting Bayesian Ordered Multinomial Regression}
 \usage{
 MultinomGibbs_fit(Train_X, Train_Y, nIter, burn_in, K)
 }
