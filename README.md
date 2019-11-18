@@ -7,12 +7,10 @@ Polychotomous Response Data](#polygibbs-bayesian-analysis-of-binary-&-polychotom
   - [Installation](#installation)
   - [Usage](#usage)
       - [1. Data Generation & Fitting Binary Probit Regression Using Gibbs Sampler Algorithm](#data-generation-&-fitting-binary-probit-regression-using-gibbs-sampler-algorithm)
-      - [2. Coordinates Interpolation](#coordinates-interpolation)
-      - [3. Generate Bounding Boxes](#generate-bounding-boxes)
-      - [4. Plot Link Speed and Bounding
-        Boxes](#plot-link-speed-and-bounding-boxes)
-      - [5. Matching The OSM Link IDs to GPS
-        Coordinates](#matching-the-osm-link-ids-to-gps-coordinates)
+      - [2. Prediction via fitted Bayesian Probit Model on Test Set](#prediction-via-fitted-bayesian-probit-model-on-test-set)
+      - [3. Calculation of Test Set Accuracy](#calculation-of-test-set-accuracy)
+      - [4. Analysis of Convergence of the chain via Traceplots](#analysis-of-convergence-of-the-chain-via-traceplots)
+      - [5. Ploting  Posterior Distributions of the Estimated Model Parameters](ploting-posterior-distributions-of-the-estimated-model-parameters)
   - [Details](#details)
 
 ## PolyGibbs: Bayesian Analysis of Binary & Polychotomous Response Data
@@ -75,8 +73,8 @@ library(PolyGibbs)
 ### 1\.  Data Generation & Fitting Binary Probit Regression Using Gibbs Sampler Algorithm
 
 First we create a simulated data set of n observations each with a binary response ( 0 or 1) and coressponding vlues on p covariates, 
-to demonstrate the utility of the package functionalities. 
-Then we use BinaryGibbs_fit function to implement Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
+to demonstrate the utility of the package functionalities. (Please note that ,the data generated in this section will be used throughout this article.)
+Then we use "BinaryGibbs_fit" function to implement Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
 
 ``` r
 # Generating Simulated Data 
@@ -106,73 +104,73 @@ prior_var = diag(10, 3)
 BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var )
 
 ```
+The model can be fitted using other choices of the prior specification on the regression  
+parameters changing the function inputs.
+### 2\. Prediction via fitted Bayesian Probit Model on Test Set
 
-### 2\. Coordinates Interpolation
-
-Intepolation of coordinates over a desired time sequence is so useful in
-case of irregular time sequence or better visualization of data on
-contour maps. Function `interpolate_coords` takes the lists of latitudes
-and longitudes over an irregular time sequence and interpolates
-coordinates.
-
-``` r
-# interpolate the GPS coordinates over 3 seconds
-interp_data <- interpolate_coords(LatList = LatList, LongList = LongList, 
-    timeseq = timeseq, timeint = 3)
-```
-
-### 3\. Generate Bounding Boxes
-
-While working with specific few roads rather than the whole network,
-generating regions and boxes around the corridors helps to better focus
-on the route, instead of the whole area, and remove unnecessary areas or
-roads from the data. So, accessing the OSM data can be easier, less
-challenging, and can be done in small chunks. `get_boxes` function
-splits the corridors in smaller regions by considering a maximum route
-distance of `resolution` within each box. `offLong` and `offLat`are the
-margins of each box from the closest coordinate point. The output gives
-the ID of box (`boxcuts`) for each point as well as the coordinates of
-each box (`boxlists`).
+Once we have fitted the model, we need to test the predictive power of the model on a test set. 
+Function "BinaryGibbs_Pred" is used for prediction using  the 
+fitted Bayesian Probit Model on the test set.
 
 ``` r
-# create bounding boxes
-boxout <- get_boxes(LatList = LatList, LongList = LongList, timeseq = timeseq, 
-    resolution = resolution, offLong = offLong, offLat = offLat)
-boxcuts <- boxout$boxtable$boxcuts
-boxlist <- boxout$boxlist
+# Storing the outputs of the model fitting
+Output = BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var )
+estimates = Output$estimates
+# Prediction using the fitted model
+BinaryGibbs_Pred(estimates, Test_X)
 ```
 
-### 4\. Plot Link Speed and Bounding Boxes
+### 3\. Calculation of Test Set Accuracy
+Once we have fitted the Bayesian Probit Regression model and found out the model predictions
+on a test set, we want to calculate the test set accuracy comparing the actual and predicted levels 
+of the responses on the test set. This will let us comment on the efficacy of the fitted model for the 
+purpose of prediction.
+BinaryGibbs_Test_Accuracy Calculates Accuracy of Prediction on Test Set for Bayesian Probit Regression.
 
-To better study the bounding boxes generated and estimate the
-`resolution` and margins, `plot_route` function is provided. It also has
-the option to show the average speed of the vehicle on the corridor.
+
 
 ``` r
-#plot the link speeds and bounding boxes
-plot_route(LatList=LatList,LongList=LongList,timeseq=timeseq,
-           boxlist=boxlist)
+# Storing the outputs of the model fitting and predictions
+Output = BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var )
+estimates = Output$estimates
+Predicted_Y = BinaryGibbs_Pred(estimates, Test_X)
+# Finding the accucary of prediction on the test set
+BinaryGibbs_Test_Accuracy(Predicted_Y, Test_Y)
 ```
 
-### 5\. Matching The OSM Link IDs to GPS Coordinates
+### 4\. Analysis of Convergence of the chain via Traceplots
 
-The process of matching the GPS points to the OSM data links or features
-can so challenging and inaccurate. The function `match_highway` in this
-package helps with this process in multiple ways. Firstly, it splits the
-network in few boxes and reduce the tension of accessing the whole OSM
-data at once or setting up a server for “planet.osm” data. Secondly, it
-considers `k` close points rather than the closest point to the
-coordinate. Finally, it tries to keep the route choice consistency.
+To study the convergence of the gibbs sampler algorithm we need to draw the traceplot of 
+parameter estimates that plots the estimated posterior means of various parameters over all the iterations
+of the chain. We should expect the chain to more or less stabilize around the estimated posterior mean as 
+we progress through the iterations.
+BinaryGibbs_Traceplot generates plots for diagnosis of Parameters estimates by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
 
 ``` r
-# match each points to an OSM highway
-IDList <- match_highway(LatList = LatList, LongList = LongList, timeseq = timeseq, 
-    k = 5, boxcuts = boxcuts, boxlist = boxlist)
-```
+# Storing the outputs of the model fitting
+temp = BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var )
+# Ploting the traceplot for Beta_0
+BinaryGibbs_Traceplot(beta_matrix = temp$beta_matrix, k = 0)
 
+```
+The plots can be generated for other regression parameters changing the function inputs.
+### 5\. Ploting  Posterior Distributions of the Estimated Model Parameters
+Studying the posterior distribution of the estimated model parameters is neccesary to observe the dispersion of the 
+drawn values around estimated posterior mean.
+BinaryGibbs_PosteriorDistribution_plot Plots Posterior Frequency Distribution of Parameters estimated by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
+
+
+``` r
+# Storing the outputs of the model fitting
+temp = BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var )
+# Ploting the Posterior Distribution for Beta_0
+BinaryGibbs_PosteriorDistribution_plot(beta_matrix = temp$beta_matrix , k = 0, burn_in = 2500, breaks= 50)
+
+```
+The plots can be generated for other regression parameters changing the function inputs.
 ## Details
 
-For more information on TransGPS Package, please access the package
+For more information on PolyGibbs Package, please access the package
 documentations or
 [vignettes (NEED TO ADD THE LINK)](). Please feel
 free to contact the author.
