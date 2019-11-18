@@ -11,10 +11,13 @@ Polychotomous Response Data](#polygibbs-bayesian-analysis-of-binary-&-polychotom
       - [3. Calculation of Test Set Accuracy](#calculation-of-test-set-accuracy)
       - [4. Analysis of Convergence of the chain via Traceplots](#analysis-of-convergence-of-the-chain-via-traceplots)
       - [5.  Ploting  Posterior Distributions of the Estimated Model Parameters](#ploting-posterior-distributions-of-the-estimated-model-parameters)
-      - [6. Data Generation & Fitting Bayesian Ordered Multinomial Regression] (#data-generation-&-fitting-bayesian-ordered-multinomial-regression)
-      - [7. Prediction via fitted Bayesian Ordered Multinomial Model on Test Set] (#prediction-via-fitted-bayesian-ordered-multinomial-model-on-test-set)
-      - [8. Calculation of Test Set Accuracy for Bayesian Ordered Multinomial Regression Model] (#calculation-of-test-set-accuracy-for-bayesian-ordered-multinomial-regression-model)
-      - [9. Analysis of Convergence of the chain for Bayesian Ordered Multinomial Regression via Traceplots for Regression Parameters(#analysis-of-convergence-of-the-chain-for-bayesian-ordered-multinomial-regression-via-traceplots-for-regression-parameters)
+      - [6. Data Generation & Fitting Bayesian Ordered Multinomial Regression](#data-generation-&-fitting-bayesian-ordered-multinomial-regression)
+      - [7. Prediction via fitted Bayesian Ordered Multinomial Model on Test Set](#prediction-via-fitted-bayesian-ordered-multinomial-model-on-test-set)
+      - [8. Calculation of Test Set Accuracy for Bayesian Ordered Multinomial Regression Model](#calculation-of-test-set-accuracy-for-bayesian-ordered-multinomial-regression-model)
+      - [9. Analysis of Convergence of the chain for Bayesian Ordered Multinomial Regression via Traceplots for Regression Parameters](#analysis-of-convergence-of-the-chain-for-bayesian-ordered-multinomial-regression-via-traceplots-for-regression-parameters)
+      - [10. Analysis of Convergence of the chain for Bayesian Ordered Multinomial Regression via Traceplots for Boundary Parameters ](#analysis-of-convergence-of-the-chain-for-bayesian-ordered-multinomial-regression-via-traceplots-for-boundary-parameters)
+      - [11. Ploting  Posterior Distributions of the Estimated Regression Parameters for Bayesian Ordered Multinomial Regression](#ploting-posterior-distributions-of-the-estimated-regression-parameters-for-bayesian-ordered-multinomial-regression)
+      - [12. Ploting  Posterior Distributions of the Estimated Boundary Parameters for Bayesian Ordered Multinomial Regression](#ploting-posterior-distributions-of-the-estimated-boundary-parameters-for-bayesian-ordered-multinomial-regression)
       
   - [Details](#details)
 
