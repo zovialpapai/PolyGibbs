@@ -6,8 +6,7 @@ Abhisek Chakraborty
 Polychotomous Response Data](#polygibbs-bayesian-analysis-of-binary-&-polychotomous-response-data)
   - [Installation](#installation)
   - [Usage](#usage)
-      - [1. Coordinates Conversion to New
-        CRS](#coordinates-conversion-to-new-crs)
+      - [1. Data Generation & Fitting Binary Probit Regression Using Gibbs Sampler Algorithm](#data-generation-&-fitting-binary-probit-regression-using-gibbs-sampler-algorithm)
       - [2. Coordinates Interpolation](#coordinates-interpolation)
       - [3. Generate Bounding Boxes](#generate-bounding-boxes)
       - [4. Plot Link Speed and Bounding
@@ -73,19 +72,39 @@ devtools::install_github("zovialpapai/PolyGibbs")
 library(PolyGibbs)
 ```
 
-### 1\. Coordinates Conversion to New CRS
+### 1\.  Data Generation & Fitting Binary Probit Regression Using Gibbs Sampler Algorithm
 
-Conversion of the GPS coordinates into a new CRS is the base to initiate
-any GPS analysis studies. `convert_crs` takes the initial latitude and
-longitude of a list of points and convert to any new CRS. The default
-value for the final projection is `"+proj=longlat +ellps=WGS84
-+datum=WGS84 +no_defs +towgs84=0,0,0"`, which the CRS corresponding to
-OSM data (and the CRS for the `SampleTransGPS` data).
+First we create a simulated data set of n observations each with a binary response ( 0 or 1) and coressponding vlues on p covariates, 
+to demonstrate the utility of the package functionalities. 
+Then we use BinaryGibbs_fit function to implement Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
 
 ``` r
-# convert from the initial CRS projection to a new one
-convlist <- convert_crs(LatList = LatList, LongList = LongList, InitProj = InitProj, 
-    NextProj = NextProj)
+# Generating Simulated Data 
+set.seed(250)
+require(truncnorm)
+require(MASS)
+N <- 500
+x1 <- seq(-1, 1, length.out = N)
+x2 <- rnorm(N, 0, 1)
+D <- 3
+X <- matrix(c(rep(1, N), x1, x2), ncol = D)
+true_theta <- c(- 0.5, 3.3, 2)
+p <- pnorm(X %*% true_theta)
+y <- rbinom(N, 1, p)
+#Spliting The Data in Train and Test in 80:20 ratio
+Train_ID = sample(1:nrow(X), round(nrow(X) * 0.8), replace = FALSE) # Train Data IDS
+Train_X = X[Train_ID, -1] # Train Data Covariates
+Test_X = X[-Train_ID, -1] # Test Data Covarites
+Train_Y = y[Train_ID] # Train Data Response
+Test_Y = y[-Train_ID] # Test Data Response
+nIter = 10000
+burn_in = round(nIter * 0.5)
+prior = 2
+prior_mean = rep(1, 3)
+prior_var = diag(10, 3)
+# Fitting Bayesian Probit Regression
+BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var )
+
 ```
 
 ### 2\. Coordinates Interpolation
