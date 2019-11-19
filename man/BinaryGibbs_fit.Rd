@@ -4,8 +4,7 @@
 \alias{BinaryGibbs_fit}
 \title{Fitting Bayesian Probit Model.}
 \usage{
-BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean,
-  prior_var)
+BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var)
 }
 \arguments{
 \item{Train_X}{n X p matrix of continuous covarites of training set.}
