@@ -269,9 +269,11 @@ Multinom_traceplot_beta generates plots for diagnosis of Parameters estimates by
 
 ``` r
 # Storing the outputs of the model fitting
-To  write and edit
+Result = MultinomGibbs_fit(Train_X, Train_Y, nIter, burn_in, K)
+gamma_update = Result$gamma_update
+
 # Ploting the traceplot for Beta_0
-To write and edit
+Multinom_traceplot_gamma(gamma_update = gamma_update , k = 2)
 ```
 ### 11\. Ploting  Posterior Distributions of the Estimated Regression Parameters for Bayesian Ordered Multinomial Regression 
 Studying the posterior distribution of the estimated regression parameters is neccesary to observe the dispersion of the 
