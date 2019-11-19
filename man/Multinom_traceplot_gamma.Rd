@@ -17,9 +17,6 @@ Multinom_traceplot_gamma(gamma_update, k)
 \description{
 \code{Multinom_traceplot_gamma} Plots for diagnosis of Parameters estimates by Ordered Multinomial Regression via data augmentation and Gibbs sampling.
 }
-\details{
-@import MASS
-}
 \examples{
 # Initialization
 set.seed(250)

@@ -1,8 +1,7 @@
 #' Plots for Diagnosis of Convergence Distribution .
 #'
 #' \code{Multinom_traceplot_gamma} Plots for diagnosis of Parameters estimates by Ordered Multinomial Regression via data augmentation and Gibbs sampling.
-#'
-#'  @import MASS
+#' @import MASS
 #' @import truncnorm
 #' @import graphics
 #' @import stats
