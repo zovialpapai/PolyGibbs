@@ -78,7 +78,7 @@ devtools::install_github("zovialpapai/PolyGibbs")
 library(PolyGibbs)
 ```
 
-### 1\.  Data Generation & Fitting Binary Probit Regression Using Gibbs Sampler Algorithm
+### 1.1  Data Generation & Fitting Binary Probit Regression Using Gibbs Sampler Algorithm
 
 First we create a simulated data set of n observations each with a binary response ( 0 or 1) and coressponding vlues on p covariates, 
 to demonstrate the utility of the package functionalities. (Please note that ,the data generated in this section will be used throughout this article.)
@@ -113,7 +113,7 @@ BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var )
 
 ```
 The model can be fitted using other choices of the prior specification on the regression parameters changing the function inputs.
-### 2\. Prediction via fitted Bayesian Probit Model on Test Set
+### 1.2 Prediction via fitted Bayesian Probit Model on Test Set
 
 Once we have fitted the model, we need to test the predictive power of the model on a test set. 
 Function "BinaryGibbs_Pred" is used for prediction using  the 
@@ -127,7 +127,7 @@ estimates = Output$estimates
 BinaryGibbs_Pred(estimates, Test_X)
 ```
 
-### 3\. Calculation of Test Set Accuracy for Bayesian Probit Regression Model
+### 1.3 Calculation of Test Set Accuracy for Bayesian Probit Regression Model
 Once we have fitted the Bayesian Probit Regression model and found out the model predictions
 on a test set, we want to calculate the test set accuracy comparing the actual and predicted levels 
 of the responses on the test set. This will let us comment on the efficacy of the fitted model for the 
@@ -145,7 +145,7 @@ Predicted_Y = BinaryGibbs_Pred(estimates, Test_X)
 BinaryGibbs_Test_Accuracy(Predicted_Y, Test_Y)
 ```
 
-### 4\. Analysis of Convergence of the chain for Bayesian Probit Regression via Traceplots
+### 1.4 Analysis of Convergence of the chain for Bayesian Probit Regression via Traceplots
 
 To study the convergence of the gibbs sampler algorithm we need to draw the traceplot of 
 parameter estimates that plots the estimated posterior means of various parameters over all the iterations
@@ -161,7 +161,7 @@ BinaryGibbs_Traceplot(beta_matrix = temp$beta_matrix, k = 0)
 
 ```
 The plots can be generated for other regression parameters changing the function inputs.
-### 5\. Ploting  Posterior Distributions of the Estimated Model Parameters for Bayesian Probit Regression
+### 1.5 Ploting  Posterior Distributions of the Estimated Model Parameters for Bayesian Probit Regression
 Studying the posterior distribution of the estimated model parameters is neccesary to observe the dispersion of the 
 drawn values around estimated posterior mean.
 BinaryGibbs_PosteriorDistribution_plot Plots Posterior Frequency Distribution of Parameters estimated by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
@@ -176,7 +176,7 @@ BinaryGibbs_PosteriorDistribution_plot(beta_matrix = temp$beta_matrix , k = 0, b
 ```
 The plots can be generated for other regression parameters changing the function inputs.
 
-### 6\.  Data Generation & Fitting Bayesian Ordered Multinomial Regression
+### 2.1  Data Generation & Fitting Bayesian Ordered Multinomial Regression
 
 First we create a simulated data set of n observations each with a multinomial response (1,2,...,K) and coressponding vlues on p covariates, to demonstrate the utility of the package functionalities. (Please note that ,the data generated in this section will be used throughout this article.)
 Then we use "MultinomGibbs_fit" function to implement via data Bayesian Ordered Multinomial Regression augmentation and Gibbs sampling.
@@ -212,7 +212,7 @@ MultinomGibbs_fit(Train_X, Train_Y, nIter, burn_in, K)
 ```
 The model can be fitted using other choices of the prior specification on the regression parameters changing the function inputs.
 
-### 7\. Prediction via fitted Bayesian Ordered Multinomial Model on Test Set
+### 2.2 Prediction via fitted Bayesian Ordered Multinomial Model on Test Set
 
 Once we have fitted the model, we need to test the predictive power of the model on a test set. 
 Function "MultinomGibbs_pred" is used for prediction using  the fitted Bayesian Ordered Multinomial Model on the test set.
@@ -225,7 +225,7 @@ gamma_estimates = Result$gamma_estimates
 # Prediction using the fitted model
 MultinomGibbs_pred(estimates, gamma_estimates,Test_X )
 ```
-### 8\. Calculation of Test Set Accuracy for Bayesian Ordered Multinomial Regression Model
+### 2.3 Calculation of Test Set Accuracy for Bayesian Ordered Multinomial Regression Model
 Once we have fitted the Bayesian Ordered Multinomial Regression model and found out the model predictions
 on a test set, we want to calculate the test set accuracy comparing the actual and predicted levels 
 of the responses on the test set. This will let us comment on the efficacy of the fitted model for the 
@@ -243,7 +243,7 @@ Predicted_Y = BinaryGibbs_Pred(estimates, Test_X)
 BinaryGibbs_Test_Accuracy(Predicted_Y, Test_Y)
 ```
 
-### 9\. Analysis of Convergence of the chain for Bayesian Ordered Multinomial Regression via Traceplots for Regression Parameters
+### 2.4 Analysis of Convergence of the chain for Bayesian Ordered Multinomial Regression via Traceplots for Regression Parameters
 
 To study the convergence of the gibbs sampler algorithm we need to draw the traceplot of regression
 parameter estimates that plots the estimated posterior means of various parameters over all the iterations
@@ -259,7 +259,7 @@ beta_matrix = Result$beta_matrix
 Multinom_traceplot_beta(beta_matrix = beta_matrix, k = 1)
 ```
 
-### 10\. Analysis of Convergence of the chain for Bayesian Ordered Multinomial Regression via Traceplots for Boundary Parameters
+### 2.5 Analysis of Convergence of the chain for Bayesian Ordered Multinomial Regression via Traceplots for Boundary Parameters
 
 To study the convergence of the gibbs sampler algorithm we need to draw the traceplot of boundary
 parameter estimates that plots the estimated posterior means of various parameters over all the iterations
@@ -275,7 +275,7 @@ gamma_update = Result$gamma_update
 # Ploting the traceplot for Beta_0
 Multinom_traceplot_gamma(gamma_update = gamma_update , k = 2)
 ```
-### 11\. Ploting  Posterior Distributions of the Estimated Regression Parameters for Bayesian Ordered Multinomial Regression 
+### 2.6 Ploting  Posterior Distributions of the Estimated Regression Parameters for Bayesian Ordered Multinomial Regression 
 Studying the posterior distribution of the estimated regression parameters is neccesary to observe the dispersion of the 
 drawn values around estimated posterior mean.
 Multinom_PosteriorDistribution_plot_beta Plots Posterior Frequency Distribution of Parameters estimated by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
@@ -291,7 +291,7 @@ Multinom_PosteriorDistribution_plot_beta(beta_matrix = beta_matrix , k = 2, burn
 ```
 The plots can be generated for other regression parameters changing the function inputs.
 
-### 12\. Ploting  Posterior Distributions of the Estimated Boundary Parameters for Bayesian Ordered Multinomial Regression 
+### 2.7 Ploting  Posterior Distributions of the Estimated Boundary Parameters for Bayesian Ordered Multinomial Regression 
 Studying the posterior distribution of the estimated boundary parameters is neccesary to observe the dispersion of the 
 drawn values around estimated posterior mean.
 Multinom_PosteriorDistribution_plot_gamma Plots Posterior Frequency Distribution of Parameters estimated by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
