@@ -1,0 +1,93 @@
+---
+title: "R Package: PolyGibbs"
+author: "Abhisek Chakraborty"
+date: "22/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+The primary objective of the R Package is implementation of Probit Regression for Binary Responses via data augmentation and Gibbs sampling and its extention in modelling Ordered Multinomial responses, as discussed in ”Bayesian Analysis of Binary and Polychotomous Response Data” [Author(s): James H. Albert and Siddhartha Chib, Source: Journal of the American Statistical Association].
+
+Probit Regression is used to model ordinal binary responses with both continuous and discrete variables as covariates. In data augmentation technique, given the binary responses we generate values from a underlying latent normal distribution and prior structures are assumed on the model parameters. Next the posterior distribution of the model parameters are derived and parameters estimation is carried out by a Gibbs Sampler algorithm using the full conditional distributions. The technique can be extended to model multinomial ordinal responses as well where the cut-off points on the latent variable axis also become model parameters and are updated at each iteration of the Gibbs Sampler algorithm. An attempt is made to put these two Gibbs Sampler algorithms in a R Package, along with the diagnostics plots i.e trace-plots to study the convergences and density plots of the posterior distributions. The flexibility of choices on the prior specification, number of iterations, burn in periods etc is be maintained.
+
+In biomedical sciences, finance, astronomy etc researchers and practitioners often face problems of classifying objects of interest in two or more ordinal classes. In Wireless sensor networks it’s often more energy efficient to observe ordinal categorical or semi-continuous responses rather than recording continuous responses and data augmentation technique is often used to estimate the model parameters. The R package is envisioned to serve the purpose of modelling in such scenarios.
+
+The functionalities of the package is discussed along with simulated examples in the following two sections:
+A. Bayesian Probit Regression via Data Augmentation and Gibbs Sampler Algorithm.
+B. Bayesian Ordered Multinomial Regression via Data Augmentation and Gibbs Sampler.
+
+
+## A. Bayesian Probit Regression via Data Augmentation and Gibbs Sampler Algorithm
+
+Suppose $N$ independent binary random variables $Y_1, Y_2, ..., Y_N$ are observed, where $Y_i$ is distributed as Bernoulli($p_i$). The $p_i$s are related to a set of covariates that may be discrete or continuous. Define the binary regression model as $p_i = H(x_i^T\beta)$ for $i = 1,2,..,N$ where $\beta$ is a vector of $k$ unknown parameters, $x_i^T$ is a vector of known covariates and $H$ is a known cdf linking the probabilities $p_i$ with the linear structure $x_i^T\beta$.
+
+Let $H = \Phi$, leading to probit model. Introduce $N$  independent latent variables where $Z_1, Z_2,..., Z_n$ where $Z_i$ follows $N(x_i^T\beta)$, and define $Y_i = 1$ if $Z_i > 0$ and $Y_i = 0$ otherwise. Then $Y_i$s become independent bernoulli random variables with $p_i = \Phi(x_i^T\beta)$. Define the design matrix
+$X = [x_1^T, x_2^T, ..., x_N^T]^T$.
+
+The joint posterior density of unobservables $\beta$ and $Z = (Z_1 , Z_2, ..., Z_N)$ given the data $y = (y_1 , y_2, ..., y_N)$ is given by
+
+$$
+\pi(\beta,Z| y) = C\pi(\beta)\prod_{i=1}^{N}{((1_{Z_i}>0)(1_{y_i}=1) + (1_{Z_i}<0)(1_{y_i}=0))     \phi(Z_i,x_i^T\beta,1)}
+$$
+If the prior distribution of $\beta$ is diffuse, then $\beta|y,Z$ is distributed as $N_k(\hat\beta_z,(X^TX)^{-1})$ where $\hat\beta_z = (X^TX)^{-1}(X^TZ)$.The random variables $Z_1, Z_2, ... , Z_N$ are independent such that $Z_i|y,\beta$ is distributed as $N(x_i^T\hat\beta,1)$ truncated at left by 0 if $y_i =1$ and as $N(x_i^T\hat\beta,1)$ truncated at right by 0 if $y_i =0$.
+
+If $\beta$ is assigned the proper conjugate prior $N_k(\beta{^*}, B^{*})$ then $\beta|y, Z $ is distributed as $N_k(\tilde\beta_z,\tilde B)$ where $\tilde\beta_z = (B^{*}^{-1} + X^TX)^{-1}(X^TZ +B^{*}^{-1}\beta^{*})$ and $\tilde B = (B^{*}^{-1} + X^TX)^{-1}$. The random variables $Z_1, Z_2, ... , Z_N$ are independent such that $Z_i|y,\beta$ is distributed as $N(x_i^T\tilde\beta,1)$ truncated at left by 0 if $y_i =1$ and as $N(x_i^T\tilde\beta,1)$ truncated at right by 0 if $y_i =0$. 
+
+
+## A.1 Data Generation & Fitting Binary Probit Regression using Gibbs Sampler Algorithm
+
+First we create a simulated data set of n observations each with a binary response ( 0 or 1) and coressponding vlues on p covariates, to demonstrate the utility of the package functionalities. (Please note that ,the data generated in this section will be used throughout this article.) Then we use "BinaryGibbs_fit" function to implement Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
+
+```{r BinaryGibbs_fit , echo = TRUE,cache = TRUE,message = FALSE}
+# Generating Simulated Data 
+set.seed(250)
+require(PolyGibbs)
+require(truncnorm)
+require(MASS)
+N <- 500
+x1 <- seq(-1, 1, length.out = N)
+x2 <- rnorm(N, 0, 1)
+D <- 3
+X <- matrix(c(rep(1, N), x1, x2), ncol = D)
+true_theta <- c(- 0.5, 3.3, 2)
+p <- pnorm(X %*% true_theta)
+y <- rbinom(N, 1, p)
+#Spliting The Data in Train and Test in 80:20 ratio
+Train_ID = sample(1:nrow(X), round(nrow(X) * 0.8), replace = FALSE) # Train Data IDS
+Train_X = X[Train_ID, -1] # Train Data Covariates
+Test_X = X[-Train_ID, -1] # Test Data Covarites
+Train_Y = y[Train_ID] # Train Data Response
+Test_Y = y[-Train_ID] # Test Data Response
+nIter = 10000
+burn_in = round(nIter * 0.5)
+prior = 2
+prior_mean = rep(1, 3)
+prior_var = diag(10, 3)
+# Fitting Bayesian Probit Regression
+# Uneccesasy print messages are supressed to keep the vigenette tidy
+invisible(capture.output(Result <- BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var )))
+# Output of the tail.
+list(estimates = Result$estimates,Train_Accuracy_tail = tail(Result$Train_Accuracy, n =10),beta_matrix_tail= tail(Result$beta_matrix, n = 10))
+# The actual function outputs are estimates, Train_Accuracy, beta_matrix.
+```
+
+The model can be fitted using other choices of the prior specification on the regression parameters changing the function inputs.
+
+## A.2 Prediction via Fitted Bayesian Probit Model on Test Set
+
+Once we have fitted the model, we need to test the predictive power of the model on a test set. Function "BinaryGibbs_Pred" is used for prediction using the fitted Bayesian Probit Model on the test set.
+```{r BinaryGibbs_Pred , echo = TRUE, cache = TRUE, message = FALSE}
+# Storing the outputs of the model fitting
+estimates = Result$estimates
+# Prediction using the fitted model
+BinaryGibbs_Pred(estimates, Test_X)
+```
+
+
+
+
