@@ -1,6 +1,6 @@
 ---
-title: "R Package: PolyGibbs"
-author: "Abhisek Chakraborty"
+title: "PolyGibbs: Bayesian Analysis of Binary & Polychotomous Response Data"
+author: "Abhisek Chakraborty, Department of Statistics, Texas A & M University"
 date: "22/11/2019"
 output: html_document
 ---
@@ -36,7 +36,7 @@ $$
 $$
 If the prior distribution of $\beta$ is diffuse, then $\beta|y,Z$ is distributed as $N_k(\hat\beta_z,(X^TX)^{-1})$ where $\hat\beta_z = (X^TX)^{-1}(X^TZ)$.The random variables $Z_1, Z_2, ... , Z_N$ are independent such that $Z_i|y,\beta$ is distributed as $N(x_i^T\hat\beta,1)$ truncated at left by 0 if $y_i =1$ and as $N(x_i^T\hat\beta,1)$ truncated at right by 0 if $y_i =0$.
 
-If $\beta$ is assigned the proper conjugate prior $N_k(\beta{^*}, B^{*})$ then $\beta|y, Z $ is distributed as $N_k(\tilde\beta_z,\tilde B)$ where $\tilde\beta_z = (B^{*}^{-1} + X^TX)^{-1}(X^TZ +B^{*}^{-1}\beta^{*})$ and $\tilde B = (B^{*}^{-1} + X^TX)^{-1}$. The random variables $Z_1, Z_2, ... , Z_N$ are independent such that $Z_i|y,\beta$ is distributed as $N(x_i^T\tilde\beta,1)$ truncated at left by 0 if $y_i =1$ and as $N(x_i^T\tilde\beta,1)$ truncated at right by 0 if $y_i =0$. 
+If $\beta$ is assigned the proper conjugate prior $N_k(\beta{^*}, B^{*})$ then $\beta|y,Z$ is distributed as $N_k(\tilde\beta_z,\tilde B)$ where $\tilde\beta_z = (B^{*-1} +  X^TX)^{-1}(B^{*-1}\beta^{*} + X^TZ)$ and $\tilde B =( B^{*-1} +  X^TX)^{-1}$. The random variables $Z_1, Z_2, ... , Z_N$ are independent such that $Z_i|y,\beta$ is distributed as $N(x_i^T\tilde\beta,1)$ truncated at left by 0 if $y_i =1$ and as $N(x_i^T\tilde\beta,1)$ truncated at right by 0 if $y_i =0$. 
 
 
 ## A.1 Data Generation & Fitting Binary Probit Regression using Gibbs Sampler Algorithm
@@ -88,6 +88,38 @@ estimates = Result$estimates
 BinaryGibbs_Pred(estimates, Test_X)
 ```
 
+## A.3 Calculation of Test Set Accuracy for Bayesian Probit Regression Model
+
+Once we have fitted the Bayesian Probit Regression model and found out the model predictions on a test set, we want to calculate the test set accuracy comparing the actual and predicted levels of the responses on the test set. This will let us comment on the efficacy of the fitted model for the purpose of prediction. BinaryGibbs_Test_Accuracy Calculates Accuracy of Prediction on Test Set for Bayesian Probit Regression.
+
+```{r BinaryGibbs_Test_Accuracy , echo = TRUE, cache = TRUE, message = FALSE}
+# Storing the outputs of the model fitting and predictions
+estimates = Result$estimates
+Predicted_Y = BinaryGibbs_Pred(estimates, Test_X)
+# Finding the accucary of prediction on the test set
+BinaryGibbs_Test_Accuracy(Predicted_Y, Test_Y)
+```
 
 
+## A.4 Analysis of Convergence of the chain for Bayesian Probit Regression via Traceplots
 
+To study the convergence of the gibbs sampler algorithm we need to draw the traceplot of parameter estimates that plots the estimated posterior means of various parameters over all the iterations of the chain. We should expect the chain to more or less stabilize around the estimated posterior mean as we progress through the iterations. BinaryGibbs_Traceplot generates plots for diagnosis of Parameters estimates by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
+
+```{r BinaryGibbs_Traceplot , echo = TRUE, cache = TRUE, message = FALSE}
+# Ploting the traceplot for Beta_0
+BinaryGibbs_Traceplot(beta_matrix = Result$beta_matrix, k = 0)
+```
+
+The plots can be generated for other regression parameters changing the function inputs.
+
+
+## A.5 Ploting Posterior Distributions of the Estimated Model Parameters for Bayesian Probit Regression
+
+Studying the posterior distribution of the estimated model parameters is neccesary to observe the dispersion of the drawn values around estimated posterior mean. BinaryGibbs_PosteriorDistribution_plot Plots Posterior Frequency Distribution of Parameters estimated by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
+
+```{r BinaryGibbs_PosteriorDistribution_plot , echo = TRUE, cache = TRUE, message = FALSE}
+# Ploting the Posterior Distribution for Beta_0
+BinaryGibbs_PosteriorDistribution_plot(beta_matrix = Result$beta_matrix , k = 0, burn_in = 2500, breaks= 50)
+```
+
+The plots can be generated for other regression parameters changing the function inputs.
