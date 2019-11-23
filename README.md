@@ -314,5 +314,5 @@ The plots can be generated for other boundary parameters changing the function i
 ## Details
 
 For more information on PolyGibbs Package, please access the package
-documentations or [vignettes](http://rpubs.com/cabhisek/552770). Please feel
+documentations or [vignettes](http://rpubs.com/cabhisek/PolyGibbs). Please feel
 free to contact the author.
