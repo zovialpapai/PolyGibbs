@@ -230,17 +230,18 @@ Once we have fitted the Bayesian Ordered Multinomial Regression model and found 
 on a test set, we want to calculate the test set accuracy comparing the actual and predicted levels 
 of the responses on the test set. This will let us comment on the efficacy of the fitted model for the 
 purpose of prediction.
-MultinomGibbs_Test_Accuracy Calculates Accuracy of Prediction on Test Set for Bayesian Probit Regression.
+MultinomGibbs_Test_Accuracy Calculates Accuracy of Prediction on Test Set for Bayesian Ordered Multinomial Regression.
 
 
 
 ``` r
 # Storing the outputs of the model fitting and predictions
-Output = BinaryGibbs_fit(Train_X, Train_Y, nIter, prior, burn_in, prior_mean, prior_var )
-estimates = Output$estimates
-Predicted_Y = BinaryGibbs_Pred(estimates, Test_X)
-# Finding the accucary of prediction on the test set
-BinaryGibbs_Test_Accuracy(Predicted_Y, Test_Y)
+Result = MultinomGibbs_fit(Train_X, Train_Y, nIter, burn_in, K)
+estimates = Result$estimates
+gamma_estimates = Result$gamma_estimates
+Result_Pred = MultinomGibbs_pred(estimates, gamma_estimates,Test_X )
+Predicted_Y = Result_Pred
+MultinomGibbs_Test_Accuracy(Predicted_Y, Test_Y, K)
 ```
 
 ### 2.4 Analysis of Convergence of the chain for Bayesian Ordered Multinomial Regression via Traceplots for Regression Parameters
@@ -258,6 +259,7 @@ beta_matrix = Result$beta_matrix
 # Ploting the traceplot for Beta_0
 Multinom_traceplot_beta(beta_matrix = beta_matrix, k = 1)
 ```
+The plots can be generated for other regression parameters changing the function inputs.
 
 ### 2.5 Analysis of Convergence of the chain for Bayesian Ordered Multinomial Regression via Traceplots for Boundary Parameters
 
@@ -275,6 +277,8 @@ gamma_update = Result$gamma_update
 # Ploting the traceplot for Beta_0
 Multinom_traceplot_gamma(gamma_update = gamma_update , k = 2)
 ```
+The plots can be generated for other boundary parameters changing the function inputs.
+
 ### 2.6 Ploting  Posterior Distributions of the Estimated Regression Parameters for Bayesian Ordered Multinomial Regression 
 Studying the posterior distribution of the estimated regression parameters is neccesary to observe the dispersion of the 
 drawn values around estimated posterior mean.
@@ -307,7 +311,7 @@ gamma_update = Result$gamma_update
 Multinom_PosteriorDistribution_plot_gamma(gamma_update = gamma_update , k = 2, burn_in = 2500, breaks= 50)
 
 ```
-The plots can be generated for other regression parameters changing the function inputs.
+The plots can be generated for other boundary parameters changing the function inputs.
 
 ## Details
 
