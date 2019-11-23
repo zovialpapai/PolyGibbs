@@ -305,8 +305,6 @@ Multinom_PosteriorDistribution_plot_gamma Plots Posterior Frequency Distribution
 # Storing the outputs of the model fitting
 Result = MultinomGibbs_fit(Train_X, Train_Y, nIter, burn_in, K)
 gamma_update = Result$gamma_update
-
-
 # Ploting the Posterior Distribution for Beta_2
 Multinom_PosteriorDistribution_plot_gamma(gamma_update = gamma_update , k = 2, burn_in = 2500, breaks= 50)
 
@@ -316,5 +314,5 @@ The plots can be generated for other boundary parameters changing the function i
 ## Details
 
 For more information on PolyGibbs Package, please access the package
-documentations or [vignettes (NEED TO ADD THE LINK)](). Please feel
+documentations or [vignettes](https://github.com/zovialpapai/PolyGibbs/tree/master/Vigenette_files/figure-html). Please feel
 free to contact the author.
