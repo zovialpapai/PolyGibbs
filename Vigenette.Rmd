@@ -123,3 +123,149 @@ BinaryGibbs_PosteriorDistribution_plot(beta_matrix = Result$beta_matrix , k = 0,
 ```
 
 The plots can be generated for other regression parameters changing the function inputs.
+
+The idea discussed above can easily be generalised in modeling ordered multinomial responses.Let us briefly discuss the theory , followed by usage of the r package PolyGibbs to impleament Bayesian Ordered Multinomial Regression.
+
+## B. Bayesian Ordered Multinomial Regression via Data Augmentation and Gibbs Sampler Algorithm
+
+Suppose $Y_1, Y_2, ..., Y_N$ are observed where each $Y_i$ takes one of $J$ categories $1, 2, ...,J$. Letting $p_{ij} = P[Y_i = j] $ , define $\eta_{ij} = \sum_{i=1}^j p_{ij}$ for $j = 1,2,.., J-1$. Then one popular model for $p_{ij}$ is given by $\eta_{ij} = \Phi(\gamma_{j} - x_i^T\beta)$ for $i = 1,2,...,N$ and $j = 1,2,..,J-1$. One can motivate this model by assuming that there exists a latent continuous random variable $Z_i$ distributed as $N(x_i^T\beta,1)$ and we observe $Y_i$ where $Y_i = j$ if $\gamma_{j-1} < Z_i < \gamma_{j}$ with $\gamma_0 = -\infty$ and $\gamma_J = \infty$. In this model the regression parameter $\beta$ and bin boundaries $\gamma = [\gamma_1,\gamma_2,...,\gamma_{J-1}]$ are unkonown parameters.
+The  joint posterior density of $\beta$ and $\gamma$ is given by
+
+$$
+\pi(\beta,\gamma|y) = C\pi(\beta,\gamma)\prod_{i=1}^N\sum_{j=1}^J 1_{y_i = j} [\Phi(\gamma_{j} - x_i^T\beta) - \Phi(\gamma_{j-1} - x_i^T\beta)]
+$$
+where $\pi(\beta,\gamma)$ is a prior on $(\beta,\gamma)$. If we assign a diffused prior on $(\beta,\gamma)$, then the joint posterior density of $(\beta,\gamma, Z)$ given data is given by
+
+$$
+\pi(\beta,\gamma|y) = C\prod_{i=1}^N (1/2\pi)^{1/2}exp(-(Z_i - x_i^T\beta)^2/2)[\sum_{j=1}^J 1_{y_i = j} 1_{\gamma_{j-1}<Z_i<\gamma_j}]
+$$
+The posterior distribution of $\beta$ conditional on $y,Z$ is given by a multivariate normal distribution of the form discussed in the probit regression section. The fully conditional posterior distributions of $Z_1,Z_2,..,Z_N$ independent with $Z_i|\beta,\gamma,y_i = j$ distributed $N(x_i^T\beta,1)$ with trunacated at left(right) by $\gamma_{j-1}$($\gamma_j$). The fully conditional distribution of $\gamma_j$ given $(\beta,y,Z)$ and $\gamma_k$ $k\neq j$ is proportional to 
+$$
+\prod_{j=1}^J[1_{y_i = j} 1_{\gamma_{j-1}<Z_i<\gamma_j} + 1_{y_i = j} 1_{\gamma_{j}<Z_i<\gamma_{j+1}}]
+$$
+which can be seen as uniform on the interval $(\max(\max(Z_i: Y_i = j), \gamma_{j-1}), \min(\min(Z_i: Y_i = j+1), \gamma_{j}))$.
+
+## B.1 Data Generation & Fitting Bayesian Ordered Multinomial Regression
+
+First we create a simulated data set of n observations each with a multinomial response (1,2,...,K) and coressponding vlues on p covariates, to demonstrate the utility of the package functionalities. (Please note that ,the data generated in this section will be used throughout this article.) Then we use "MultinomGibbs_fit" function to implement via data Bayesian Ordered Multinomial Regression augmentation and Gibbs sampling.
+
+```{r MultinomGibbs_fit , echo = TRUE,cache = TRUE,message = FALSE}
+# Generating Simulated Data 
+# Initialization
+set.seed(250)
+n <- 1000 # Total no of observations.
+int1 <- -1 # gamma boundary
+int2 <- 3  # gamma boundary
+beta <- c(-.75, 1) # Regression Parameters for data generation.
+X <- cbind(sample(1:4, n, replace = TRUE), rnorm(n, 0, 2)) # Generated design matrix
+# Generation of Latent Variable Observations
+eta <- X %*% beta
+z <- rnorm(n, eta, 1)
+# Generation of Responses depending on z
+y <- rep(0, n)
+y[z <= int1] <- 1
+y[int1 <z & z <= int2] <- 2
+y[int2 < z ] <- 3
+#Spliting The Data in Train and Test in 80:20 ratio
+Train_ID = sample(1:nrow(X), round(nrow(X) * 0.8), replace = FALSE) # Train Data IDS
+Train_X = X[Train_ID, ]# Train Data Covariates
+Test_X = X[-Train_ID, ]
+Train_Y = y[Train_ID] # Train Data Response
+Test_Y = y[-Train_ID] # Test Data Response
+K = 3
+nIter = 10000
+burn_in = 5000
+# Fitting Bayesian Ordered Multinomial Regression
+# Uneccesasy print messages are supressed to keep the vigenette tidy
+invisible(capture.output(Result <- MultinomGibbs_fit(Train_X, Train_Y, nIter, burn_in, K)))
+# Output of the tail.
+list(estimates = Result$estimates,Train_Accuracy_tail = tail(Result$Train_Accuracy, n =10),beta_matrix_tail= tail(Result$beta_matrix, n = 10))
+# The actual function outputs are estimates, Train_Accuracy, beta_matrix.
+```
+
+## B2. Prediction via fitted Bayesian Ordered Multinomial Model on Test Set
+
+Once we have fitted the model, we need to test the predictive power of the model on a test set. Function "MultinomGibbs_pred" is used for prediction using the fitted Bayesian Ordered Multinomial Model on the test set.
+
+```{r MultinomGibbs_pred , echo = TRUE,cache = TRUE,message = FALSE}
+# Storing the outputs of the model fitting
+estimates = Result$estimates
+gamma_estimates = Result$gamma_estimates
+# Prediction using the fitted model
+MultinomGibbs_pred(estimates, gamma_estimates,Test_X )
+```
+
+## B3. Calculation of Test Set Accuracy for Bayesian Ordered Multinomial Regression Model
+
+Once we have fitted the Bayesian Ordered Multinomial Regression model and found out the model predictions on a test set, we want to calculate the test set accuracy comparing the actual and predicted levels of the responses on the test set. This will let us comment on the efficacy of the fitted model for the purpose of prediction. MultinomGibbs_Test_Accuracy Calculates Accuracy of Prediction on Test Set for Bayesian Probit Regression.
+
+```{r MultinomGibbs_Test_Accuracy , echo = TRUE,cache = TRUE,message = FALSE}
+# Storing the outputs of the model fitting and predictions
+estimates = Result$estimates
+Predicted_Y = MultinomGibbs_pred(estimates, gamma_estimates,Test_X )
+# Finding the accucary of prediction on the test set
+MultinomGibbs_Test_Accuracy(Predicted_Y, Test_Y, K)
+```
+
+## B4. Analysis of Convergence of the chain for Bayesian Ordered Multinomial Regression via Traceplots for Regression Parameters
+
+To study the convergence of the gibbs sampler algorithm we need to draw the traceplot of regression parameter estimates that plots the estimated posterior means of various parameters over all the iterations of the chain. We should expect the chain to more or less stabilize around the estimated posterior mean as we progress through the iterations. Multinom_traceplot_beta generates plots for diagnosis of Parameters estimates by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
+
+```{r Multinom_traceplot_beta , echo = TRUE,cache = TRUE,message = FALSE}
+# Storing the outputs of the model fitting
+beta_matrix = Result$beta_matrix
+# Ploting the traceplot for Beta_0
+Multinom_traceplot_beta(beta_matrix = beta_matrix, k = 1)
+```
+
+The plots can be generated for other regression parameters changing the function inputs.
+
+## B5. Analysis of Convergence of the chain for Bayesian Ordered Multinomial Regression via Traceplots for Boundary Parameters
+
+To study the convergence of the gibbs sampler algorithm we need to draw the traceplot of boundary parameter estimates that plots the estimated posterior means of various parameters over all the iterations of the chain. We should expect the chain to more or less stabilize around the estimated posterior mean as we progress through the iterations. Multinom_traceplot_gamma generates plots for diagnosis of Parameters estimates by Probit Regression for Binary Responses via data augmentation and Gibbs sampling.
+
+```{r Multinom_traceplot_gamma , echo = TRUE,cache = TRUE,message = FALSE}
+# Storing the outputs of the model fitting
+gamma_update = Result$gamma_update
+# Ploting the traceplot for Beta_0
+Multinom_traceplot_gamma(gamma_update = gamma_update , k = 3)
+```
+
+The plots can be generated for other boundary parameters changing the function inputs.
+
+## B6. Ploting Posterior Distributions of the Estimated Regression Parameters for Bayesian Ordered Multinomial Regression
+
+Studying the posterior distribution of the estimated regression parameters is neccesary to observe the dispersion of the drawn values around estimated posterior mean. Multinom_PosteriorDistribution_plot_beta Plots Posterior Frequency Distribution of Parameters estimated by Multinomial Regression for Multinomial Responses via data augmentation and Gibbs sampling.
+
+```{r Multinom_PosteriorDistribution_plot_beta , echo = TRUE,cache = TRUE,message = FALSE}
+# Storing the outputs of the model fitting
+beta_matrix = Result$beta_matrix
+# Ploting the Posterior Distribution for Beta_2
+Multinom_PosteriorDistribution_plot_beta(beta_matrix = beta_matrix , k = 2, burn_in = 2500, breaks= 50)
+```
+
+The plots can be generated for other regression parameters changing the function inputs.
+
+## B7. Ploting Posterior Distributions of the Estimated Boundary Parameters for Bayesian Ordered Multinomial Regression
+
+Studying the posterior distribution of the estimated boundary parameters is neccesary to observe the dispersion of the drawn values around estimated posterior mean. Multinom_PosteriorDistribution_plot_gamma Plots Posterior Frequency Distribution of Parameters estimated by Multinomial Regression for Multinomial Responses via data augmentation and Gibbs sampling.
+
+```{r Multinom_PosteriorDistribution_plot_gamma , echo = TRUE,cache = TRUE,message = FALSE}
+# Storing the outputs of the model fitting
+gamma_update = Result$gamma_update
+# Ploting the Posterior Distribution for Beta_2
+Multinom_PosteriorDistribution_plot_gamma(gamma_update = gamma_update , k = 2, burn_in = 2500, breaks= 50)
+```
+
+The plots can be generated for other boundary parameters changing the function inputs.
+
+
+## References
+[1] James H. Albert and Siddhartha Chib, 1993. Bayesian Analysis of Binary and Polychotomous Response Data.
+
+[2] Istvan T Hernadvolgyi, 1998. Generating Random Vectors from Multivariate Normal Distributions.
+
+[3] Zdravko Botev and Pierre LEcuyer, 2017. Simulation from the Normal Distribution Truncated to an Interval in the Tail.
+
+## Contact
+For further details please look at the function documentations of the package. Any suggestions for improvement of the package is welcome. For further queries please write to cabhisek@stat.tamu.edu .

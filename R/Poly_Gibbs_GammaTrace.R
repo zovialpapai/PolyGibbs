@@ -61,10 +61,10 @@ Multinom_traceplot_gamma <- function(gamma_update, k){
   if( k %in% (2:((ncol(gamma_update) - 1 ))) == FALSE){
     stop(" plot can be generated if k is in 2:((ncol(gamma_update) - 1 ))) ")
   }
-  # Warning on no of breaks
-  if( breaks > (nrow(gamma_update) - burn_in)){
-    warning(" no. of breaks too large")
-  }
+  # # Warning on no of breaks
+  # if( breaks > (nrow(gamma_update) - burn_in)){
+  #   warning(" no. of breaks too large")
+  # }
   # Drawing the Traceplot#*
   plot(gamma_update[ ,(k)], type = "l", xlab = paste(" values of gamma_", k) , main = paste("Traceplot of gamma_", k))
   # Adding the cumulating mean
