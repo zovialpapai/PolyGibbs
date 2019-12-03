@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/552770/01f3a77b79b24931a33fd7c675586613
+bundleId: https://api.rpubs.com/api/v1/document/552770/01f3a77b79b24931a33fd7c675586613
+url: http://rpubs.com/cabhisek/552770
+when: 1575337240.83337
