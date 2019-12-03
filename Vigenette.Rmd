@@ -128,7 +128,7 @@ The idea discussed above can easily be generalised in modeling ordered multinomi
 
 ## B. Bayesian Ordered Multinomial Regression via Data Augmentation and Gibbs Sampler Algorithm
 
-Suppose $Y_1, Y_2, ..., Y_N$ are observed where each $Y_i$ takes one of $J$ categories $1, 2, ...,J$. Letting $p_{ij} = P[Y_i = j] $ , define $\eta_{ij} = \sum_{i=1}^j p_{ij}$ for $j = 1,2,.., J-1$. Then one popular model for $p_{ij}$ is given by $\eta_{ij} = \Phi(\gamma_{j} - x_i^T\beta)$ for $i = 1,2,...,N$ and $j = 1,2,..,J-1$. One can motivate this model by assuming that there exists a latent continuous random variable $Z_i$ distributed as $N(x_i^T\beta,1)$ and we observe $Y_i$ where $Y_i = j$ if $\gamma_{j-1} < Z_i < \gamma_{j}$ with $\gamma_0 = -\infty$ and $\gamma_J = \infty$. In this model the regression parameter $\beta$ and bin boundaries $\gamma = [\gamma_1,\gamma_2,...,\gamma_{J-1}]$ are unkonown parameters.
+Suppose $Y_1, Y_2, ..., Y_N$ are observed where each $Y_i$ takes one of $J$ categories $1, 2, ...,J$. Letting $p_{ij}$ = $P[Y_{i} = j]$ , define $\eta_{ij} = \sum_{i=1}^j p_{ij}$ for $j = 1,2,.., J-1$. Then one popular model for $p_{ij}$ is given by $\eta_{ij} = \Phi(\gamma_{j} - x_i^T\beta)$ for $i = 1,2,...,N$ and $j = 1,2,..,J-1$. One can motivate this model by assuming that there exists a latent continuous random variable $Z_i$ distributed as $N(x_i^T\beta,1)$ and we observe $Y_i$ where $Y_i = j$ if $\gamma_{j-1} < Z_i < \gamma_{j}$ with $\gamma_0 = -\infty$ and $\gamma_J = \infty$. In this model the regression parameter $\beta$ and bin boundaries $\gamma = [\gamma_1,\gamma_2,...,\gamma_{J-1}]$ are unkonown parameters.
 The  joint posterior density of $\beta$ and $\gamma$ is given by
 
 $$
