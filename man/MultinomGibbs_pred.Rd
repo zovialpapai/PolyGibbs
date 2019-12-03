@@ -2,8 +2,7 @@
 % Please edit documentation in R/Poly_Gibbs_Prediction.R
 \name{MultinomGibbs_pred}
 \alias{MultinomGibbs_pred}
-\title{Prediction using fitted Bayesian Ordered Multinomial Model
-\code{MultinomGibbs_Pred} Predicts using fitted Bayesian Ordered Multinomial Model.}
+\title{Prediction using fitted Bayesian Ordered Multinomial Model}
 \usage{
 MultinomGibbs_pred(estimates, gamma_estimates, Test_X)
 }
@@ -18,7 +17,6 @@ MultinomGibbs_pred(estimates, gamma_estimates, Test_X)
 Predicted_Y a nrow(Test_X) X 1 vector of predicted responses
 }
 \description{
-Prediction using fitted Bayesian Ordered Multinomial Model
 \code{MultinomGibbs_Pred} Predicts using fitted Bayesian Ordered Multinomial Model.
 }
 \examples{

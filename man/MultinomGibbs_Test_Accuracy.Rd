@@ -2,8 +2,7 @@
 % Please edit documentation in R/Poly_Gibbs_TestAccuracy.R
 \name{MultinomGibbs_Test_Accuracy}
 \alias{MultinomGibbs_Test_Accuracy}
-\title{Calculation of Accuracy of Prediction on Test Set for Bayesian Ordered Multinomial Regression
-\code{MultinomGibbs_Test_Accuracy} Calculates Accuracy of Prediction on Test Set for Bayesian Ordered Multinomial Regression.}
+\title{Calculation of Accuracy of Prediction on Test Set for Bayesian Ordered Multinomial Regression}
 \usage{
 MultinomGibbs_Test_Accuracy(Predicted_Y, Test_Y, K)
 }
@@ -18,7 +17,6 @@ MultinomGibbs_Test_Accuracy(Predicted_Y, Test_Y, K)
 Test_Accuracy A real no between 0 and 100 giving accuracy of prediction in test set.
 }
 \description{
-Calculation of Accuracy of Prediction on Test Set for Bayesian Ordered Multinomial Regression
 \code{MultinomGibbs_Test_Accuracy} Calculates Accuracy of Prediction on Test Set for Bayesian Ordered Multinomial Regression.
 }
 \examples{

@@ -5,6 +5,7 @@
 # Test_X: a () X p matrix of continuous scale covarites
 
 #' Prediction using fitted Bayesian Ordered Multinomial Model
+#'
 #' \code{MultinomGibbs_Pred} Predicts using fitted Bayesian Ordered Multinomial Model.
 #'
 #' @import MASS

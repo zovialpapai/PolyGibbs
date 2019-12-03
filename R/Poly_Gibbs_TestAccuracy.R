@@ -1,6 +1,7 @@
 # Input Predicted_Y, Test_Y (ordering is assumed)
 # K: An integer giving no. of classes
 #' Calculation of Accuracy of Prediction on Test Set for Bayesian Ordered Multinomial Regression
+#'
 #'\code{MultinomGibbs_Test_Accuracy} Calculates Accuracy of Prediction on Test Set for Bayesian Ordered Multinomial Regression.
 #'
 #' @import MASS
