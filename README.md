@@ -311,6 +311,8 @@ Multinom_PosteriorDistribution_plot_gamma(gamma_update = gamma_update , k = 2, b
 ```
 The plots can be generated for other boundary parameters changing the function inputs.
 
+An intermediate function called split is not intended for user use (hence not documented) and it do not effect the functionality of the package.
+
 ## Details
 
 For more information on PolyGibbs Package, please access the package
